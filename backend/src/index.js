@@ -8,6 +8,7 @@ const app = express();
 const port = 3001;
 
 app.use(cors());
+console.log("");
 app.use(express.json());
 
 const api_key = "wx44rd6ksw69";
