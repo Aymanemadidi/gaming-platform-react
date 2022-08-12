@@ -31,7 +31,31 @@ app.get("/test", (req, res) => {
 	res.send("hello");
 });
 
-app.post("/login", (req, res) => {});
+app.post("/login", async (req, res) => {
+	try {
+		const { username, password } = req.body;
+		const { users } = await serverClient.queryUsers({ name: username });
+		if (users.length === 0) {
+			return res.json({ message: "user not found" });
+		}
+		const token = serverClient.createToken(users[0].userId);
+		const passwordMatch = await bcrypt.compare(
+			password,
+			users[0].hashedPassword
+		);
+		if (passwordMatch) {
+			res.json({
+				token,
+				firstName: users[0].firstName,
+				lastName: users[0].lastName,
+				username,
+				userId: users[0].userId,
+			});
+		}
+	} catch (e) {
+		res.json(e);
+	}
+});
 
 app.listen(port, () => {
 	console.log("Server running on port 3001");
