@@ -5,11 +5,11 @@ import "./Login.css";
 
 function Login() {
 	const cookies = new Cookies();
-	const [userName, setUserName] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
 	function handleLogin() {
-		Axios.post("http://localhost:3001/login", username, password).then(
+		Axios.post("http://localhost:3001/login", { username, password }).then(
 			(res) => {
 				const { token, userId, firstName, lastName, username, hashedPassword } =
 					res.data;
@@ -28,7 +28,7 @@ function Login() {
 			<input
 				type="text"
 				placeholder="Username"
-				onChange={(e) => setUserName(e.target.value)}
+				onChange={(e) => setUsername(e.target.value)}
 			/>
 			<input
 				type="password"
