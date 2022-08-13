@@ -28,18 +28,15 @@ app.post("/signup", async (req, res) => {
 	}
 });
 
-app.get("/test", (req, res) => {
-	res.send("hello");
-});
-
 app.post("/login", async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		const { users } = await serverClient.queryUsers({ name: username });
+		console.log(JSON.stringify(users[0]));
 		if (users.length === 0) {
 			return res.json({ message: "user not found" });
 		}
-		const token = serverClient.createToken(users[0].userId);
+		const token = serverClient.createToken(users[0].id);
 		const passwordMatch = await bcrypt.compare(
 			password,
 			users[0].hashedPassword
@@ -56,6 +53,13 @@ app.post("/login", async (req, res) => {
 	} catch (e) {
 		res.json(e);
 	}
+});
+
+app.get("/users", async (req, res) => {
+	const { users } = await serverClient.queryUsers({
+		name: { $autocomplete: "ay" },
+	});
+	res.json({ users });
 });
 
 app.listen(port, () => {
