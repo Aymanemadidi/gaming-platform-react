@@ -36,7 +36,7 @@ app.post("/login", async (req, res) => {
 		if (users.length === 0) {
 			return res.json({ message: "user not found" });
 		}
-		const token = serverClient.createToken(users[0].id);
+		const token = serverClient.createToken(users[0].userId);
 		const passwordMatch = await bcrypt.compare(
 			password,
 			users[0].hashedPassword
