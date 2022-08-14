@@ -22,7 +22,14 @@ app.post("/signup", async (req, res) => {
 		const userId = uuidv4();
 		const hashedPassword = await bcrypt.hash(password, 10);
 		const token = serverClient.createToken(userId);
-		res.json({ token, userId, firstName, lastName, username, hashedPassword });
+		res.json({
+			token,
+			userId,
+			firstName,
+			lastName,
+			username,
+			hashedPassword,
+		});
 	} catch (e) {
 		res.json(e);
 	}
@@ -32,26 +39,25 @@ app.post("/login", async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		const { users } = await serverClient.queryUsers({ name: username });
-		console.log(JSON.stringify(users[0]));
-		if (users.length === 0) {
-			return res.json({ message: "user not found" });
-		}
-		const token = serverClient.createToken(users[0].userId);
+		if (users.length === 0) return res.json({ message: "User not found" });
+
+		const token = serverClient.createToken(users[0].id);
 		const passwordMatch = await bcrypt.compare(
 			password,
 			users[0].hashedPassword
 		);
+
 		if (passwordMatch) {
 			res.json({
 				token,
 				firstName: users[0].firstName,
 				lastName: users[0].lastName,
 				username,
-				userId: users[0].userId,
+				userId: users[0].id,
 			});
 		}
-	} catch (e) {
-		res.json(e);
+	} catch (error) {
+		res.json(error);
 	}
 });
 
