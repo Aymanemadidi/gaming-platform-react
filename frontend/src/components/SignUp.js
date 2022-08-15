@@ -3,7 +3,7 @@ import Axios from "axios";
 import Cookies from "universal-cookie";
 import "./SignUp.css";
 
-function SignUp() {
+function SignUp({ setIsAuth }) {
 	const cookies = new Cookies();
 	const [user, setUser] = useState(null);
 
@@ -17,6 +17,7 @@ function SignUp() {
 			cookies.set("lastName", lastName);
 			cookies.set("username", username);
 			cookies.set("hashedPassword", hashedPassword);
+			setIsAuth(true);
 		});
 	}
 
