@@ -10,6 +10,7 @@ import JoinGame from "./components/JoinGame";
 function App() {
 	const cookies = new Cookies();
 	const token = cookies.get("token");
+	const nameOfUser = cookies.get("username");
 	const api_key = "wx44rd6ksw69";
 	const client = StreamChat.getInstance(api_key);
 	const [isAuth, setIsAuth] = useState(false);
@@ -46,7 +47,7 @@ function App() {
 		<div className="App sign-log-container">
 			{isAuth ? (
 				<Chat client={client}>
-					<JoinGame />
+					<JoinGame nameOfUser={nameOfUser} />
 					<button onClick={logOut}>Log Out</button>
 				</Chat>
 			) : (

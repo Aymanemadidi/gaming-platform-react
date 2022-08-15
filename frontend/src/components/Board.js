@@ -13,12 +13,11 @@ function Board() {
 	const chooseSquare = async (square) => {
 		if (turn === player && board[square] === "") {
 			setTurn(player === "X" ? "O" : "X");
-			if (channel) {
-				await channel.sendEvent({
-					type: "game-move",
-					data: { square, player },
-				});
-			}
+
+			await channel.sendEvent({
+				type: "game-move",
+				data: { square, player },
+			});
 			setBoard(
 				board.map((val, idx) => {
 					if (idx === square && val === "") {

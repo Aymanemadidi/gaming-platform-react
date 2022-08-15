@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { useChatContext } from "stream-chat-react";
+import { useChatContext, Channel } from "stream-chat-react";
 import Game from "./Game";
 
-function JoinGame() {
+function JoinGame({ nameOfUser }) {
 	const [rivalUsername, setRivalUsername] = useState("");
 	const [channel, setChannel] = useState(null);
 	const { client } = useChatContext();
@@ -25,9 +25,12 @@ function JoinGame() {
 	return (
 		<>
 			{channel ? (
-				<Game channel={channel} rival={rivalUsername} />
+				<Channel channel={channel}>
+					<Game rival={rivalUsername} />
+				</Channel>
 			) : (
 				<div className="joinGame">
+					<p>Hello {nameOfUser}</p>
 					<h4>Create Game</h4>
 					<input
 						type="text"
