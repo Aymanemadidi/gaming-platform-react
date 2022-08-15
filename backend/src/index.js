@@ -63,7 +63,7 @@ app.post("/login", async (req, res) => {
 
 app.get("/users", async (req, res) => {
 	const { users } = await serverClient.queryUsers({
-		name: { $autocomplete: "ay" },
+		name: { $autocomplete: "amine" },
 	});
 	res.json({ users });
 });
