@@ -1,14 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useChannelStateContext, useChatContext } from "stream-chat-react";
 import Square from "./Square";
+import { Patterns } from "../WinningPatterns";
 
-function Board() {
+function Board({ result, setResult }) {
 	const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
 	const [player, setPlayer] = useState("X");
 	const [turn, setTurn] = useState("X");
 
 	const { channel } = useChannelStateContext();
 	const { client } = useChatContext();
+
+	useEffect(() => {
+		checkIfWin();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [board]);
+
+	function checkIfWin() {
+		Patterns.forEach((currPattern) => {
+			const firstPlayer = board[currPattern[0]];
+			if (firstPlayer === "") return;
+			let foundWinningPattern = true;
+			currPattern.forEach((idx) => {
+				if (board[idx] !== firstPlayer) {
+					foundWinningPattern = false;
+				}
+			});
+
+			if (foundWinningPattern) {
+				alert(`${board[currPattern[0]]} Is the winner`);
+				setResult({ winner: board[currPattern[0]], state: "finished" });
+			}
+		});
+	}
 
 	const chooseSquare = async (square) => {
 		if (turn === player && board[square] === "") {
@@ -29,23 +53,21 @@ function Board() {
 		}
 	};
 
-	if (channel) {
-		channel.on((event) => {
-			if (event.type === "game-move" && event.user.id !== client.userID) {
-				const currentPlayer = event.data.player === "X" ? "O" : "X";
-				setPlayer(currentPlayer);
-				setTurn(currentPlayer);
-				setBoard(
-					board.map((val, index) => {
-						if (index === event.data.square && val === "") {
-							return event.data.player;
-						}
-						return val;
-					})
-				);
-			}
-		});
-	}
+	channel.on((event) => {
+		if (event.type === "game-move" && event.user.id !== client.userID) {
+			const currentPlayer = event.data.player === "X" ? "O" : "X";
+			setPlayer(currentPlayer);
+			setTurn(currentPlayer);
+			setBoard(
+				board.map((val, index) => {
+					if (index === event.data.square && val === "") {
+						return event.data.player;
+					}
+					return val;
+				})
+			);
+		}
+	});
 
 	return (
 		<div className="board">

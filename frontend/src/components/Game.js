@@ -4,6 +4,7 @@ import { useChannelStateContext } from "stream-chat-react";
 import Board from "./Board";
 
 function Game({ rival }) {
+	const [result, setResult] = useState({ winner: "", state: "Starting" });
 	const { channel } = useChannelStateContext();
 	const [playersIn, setPlayersIn] = useState(channel.state.watcher_count === 2);
 	channel.on("user.watching.start", (event) => {
@@ -15,7 +16,7 @@ function Game({ rival }) {
 	return (
 		<>
 			<div>Game vs {rival}</div>
-			<Board />
+			<Board result={result} setResult={setResult} />
 			{/* CHAT */}
 			{/* LEAVE GAME BUTTON */}
 		</>
