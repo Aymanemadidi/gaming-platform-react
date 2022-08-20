@@ -7,6 +7,7 @@ import {
 	MessageInput,
 } from "stream-chat-react";
 import Board from "./Board";
+// import "./chat.css";
 
 function Game({ rival }) {
 	const [result, setResult] = useState({ winner: "", state: "Starting" });
@@ -22,10 +23,15 @@ function Game({ rival }) {
 		<>
 			<div>Game vs {rival}</div>
 			<Board result={result} setResult={setResult} />
-			<Window>
-				<MessageList disableDateSeparator closeReactionSelectorOnClick />
+			{/* <Window className="test">
+				<MessageList
+					disableDateSeparator
+					closeReactionSelectorOnClick
+					messageActions={["react"]}
+					hideDeletedMessages
+				/>
 				<MessageInput noFiles />
-			</Window>
+			</Window> */}
 			{/* CHAT */}
 			{/* LEAVE GAME BUTTON */}
 		</>
