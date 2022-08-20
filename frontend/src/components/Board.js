@@ -13,8 +13,15 @@ function Board({ result, setResult }) {
 
 	useEffect(() => {
 		checkIfWin();
+		checkIfTie();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [board]);
+
+	// function restart() {
+	//   setBoard(["", "", "", "", "", "", "", "", ""]);
+	//   setPlayer("X");
+	//   setTurn("x")
+	// }
 
 	function checkIfWin() {
 		Patterns.forEach((currPattern) => {
@@ -32,6 +39,20 @@ function Board({ result, setResult }) {
 				setResult({ winner: board[currPattern[0]], state: "finished" });
 			}
 		});
+	}
+
+	function checkIfTie() {
+		let filled = true;
+		board.forEach((square) => {
+			if (square == "") {
+				filled = false;
+			}
+		});
+
+		if (filled) {
+			alert("Tie");
+			setResult({ winner: "none", state: "tie" });
+		}
 	}
 
 	const chooseSquare = async (square) => {

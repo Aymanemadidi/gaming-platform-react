@@ -1,6 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { useChannelStateContext } from "stream-chat-react";
+import {
+	useChannelStateContext,
+	Window,
+	MessageList,
+	MessageInput,
+} from "stream-chat-react";
 import Board from "./Board";
 
 function Game({ rival }) {
@@ -17,6 +22,10 @@ function Game({ rival }) {
 		<>
 			<div>Game vs {rival}</div>
 			<Board result={result} setResult={setResult} />
+			<Window>
+				<MessageList disableDateSeparator closeReactionSelectorOnClick />
+				<MessageInput noFiles />
+			</Window>
 			{/* CHAT */}
 			{/* LEAVE GAME BUTTON */}
 		</>
