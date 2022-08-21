@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useChatContext, Channel } from "stream-chat-react";
 import Game from "./Game";
 
-function JoinGame({ nameOfUser }) {
+function JoinGame({ nameOfUser, logOut }) {
 	const [rivalUsername, setRivalUsername] = useState("");
 	const [channel, setChannel] = useState(null);
 	const { client } = useChatContext();
@@ -26,7 +26,7 @@ function JoinGame({ nameOfUser }) {
 		<>
 			{channel ? (
 				<Channel channel={channel}>
-					<Game rival={rivalUsername} setChannel={setChannel} />
+					<Game rival={rivalUsername} setChannel={setChannel} logOut={logOut} />
 				</Channel>
 			) : (
 				<div className="joinGame">

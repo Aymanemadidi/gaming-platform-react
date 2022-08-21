@@ -4,7 +4,7 @@ import SignUp from "./components/SignUp";
 import { StreamChat } from "stream-chat";
 import { Chat } from "stream-chat-react";
 import Cookies from "universal-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JoinGame from "./components/JoinGame";
 
 function App() {
@@ -26,29 +26,31 @@ function App() {
 		setIsAuth(false);
 	}
 
-	if (token) {
-		client
-			.connectUser(
-				{
-					id: cookies.get("userId"),
-					name: cookies.get("username"),
-					firstName: cookies.get("firstName"),
-					lastName: cookies.get("lastName"),
-					hashedPassword: cookies.get("hashedPassword"),
-				},
-				token
-			)
-			.then((user) => {
-				setIsAuth(true);
-			});
-	}
+	useEffect(() => {
+		if (token) {
+			console.log("connect called");
+			client
+				.connectUser(
+					{
+						id: cookies.get("userId"),
+						name: cookies.get("username"),
+						firstName: cookies.get("firstName"),
+						lastName: cookies.get("lastName"),
+						hashedPassword: cookies.get("hashedPassword"),
+					},
+					token
+				)
+				.then((user) => {
+					setIsAuth(true);
+				});
+		}
+	}, []);
 
 	return (
 		<div className="App sign-log-container">
 			{isAuth ? (
 				<Chat client={client}>
-					<JoinGame nameOfUser={nameOfUser} />
-					<button onClick={logOut}>Log Out</button>
+					<JoinGame nameOfUser={nameOfUser} logOut={logOut} />
 				</Chat>
 			) : (
 				<>
