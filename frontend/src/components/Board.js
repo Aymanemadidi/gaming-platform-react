@@ -44,7 +44,7 @@ function Board({ result, setResult }) {
 	function checkIfTie() {
 		let filled = true;
 		board.forEach((square) => {
-			if (square == "") {
+			if (square === "") {
 				filled = false;
 			}
 		});

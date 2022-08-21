@@ -9,7 +9,7 @@ import {
 import Board from "./Board";
 // import "./chat.css";
 
-function Game({ rival }) {
+function Game({ rival, setChannel }) {
 	const [result, setResult] = useState({ winner: "", state: "Starting" });
 	const { channel } = useChannelStateContext();
 	const [playersIn, setPlayersIn] = useState(channel.state.watcher_count === 2);
@@ -33,7 +33,12 @@ function Game({ rival }) {
 				<MessageInput noFiles />
 			</Window> */}
 			{/* CHAT */}
-			{/* LEAVE GAME BUTTON */}
+			<button
+				onClick={async () => {
+					await channel.stopWatching();
+					setChannel(null);
+				}}
+			></button>
 		</>
 	);
 }
